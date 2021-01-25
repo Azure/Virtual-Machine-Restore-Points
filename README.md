@@ -50,7 +50,7 @@ An Update on existing Restore Point Collection resource is not supported.
 ## Create Disk
 
 1. Get the Disk Restore ID by either using GET call on Restore Point Collection and expanding Restore Points or by doing a call on Restore Point(s). 
-2. You can then use this ARM template to create a disk using diskRestorePoint: https://github.com/Vaibhav-Agar/vm-restore-points/blob/main/createDiskFromDiskRestorePoint.json
+2. You can then use this ARM template to create a disk using diskRestorePoint: https://github.com/Azure/Virtual-Machine-Restore-Points/blob/main/createDiskFromDiskRestorePoint.json
 
 Alternatively, you can also use the below Rest API call (same as https://docs.microsoft.com/en-us/rest/api/compute/disks/createorupdate):
 
