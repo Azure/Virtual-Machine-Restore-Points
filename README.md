@@ -19,8 +19,8 @@ The Vm Restore Point feature is currently in private preview and is not meant fo
 2. Ultra disks, Ephemeral OS Disks and Shared Disks are not supported.
 
 ## Creating a VM Restore Point
-1. First Step is to create a RestorePointCollection. You can do so by using the template https://github.com/Vaibhav-Agar/vm-restore-points/blob/main/createrestorepointcollection.json 
-2. Next, you can create a restore point using the RestorePointCollection. You can do so by using the template https://github.com/Vaibhav-Agar/vm-restore-points/blob/main/CreateRestorePoint.json
+1. First Step is to create a RestorePointCollection. You can do so by using the template https://github.com/Azure/Virtual-Machine-Restore-Points/blob/main/createRestorePointCollection.json
+2. Next, you can create a restore point using the RestorePointCollection. You can do so by using the template https://github.com/Azure/Virtual-Machine-Restore-Points/blob/main/CreateRestorePoint.json
 
 2a. You can also create a restore point and exclude one or more attached disks by using the following API call:
 
