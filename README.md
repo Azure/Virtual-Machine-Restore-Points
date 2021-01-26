@@ -1,6 +1,6 @@
 # What is a VM Restore Point? 
 
-A VM Restore Point stores the VM configuration and point-in-time crash or application consistent snapshot for all managed disks attached to a Virtual Machine. VMRestorePointCollection is the ARM resource which contains the restore points specific to a VM and each Restore Point contains disk restore points for each included disk. The resource hierarchy hence looks like this-
+A VM Restore Point stores the VM configuration and point-in-time crash (if the VM is shutdown) or application consistent snapshot for all managed disks attached to a Virtual Machine. VMRestorePointCollection is the ARM resource which contains the restore points specific to a VM and each Restore Point contains disk restore points for each included disk. The resource hierarchy hence looks like this-
 
 
    VM Restore Points Collection
