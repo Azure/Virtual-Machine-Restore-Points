@@ -18,7 +18,7 @@ The Vm Restore Point feature is currently in private preview and is not meant fo
 1. Only works with Managed disks.
 2. Ultra disks, Ephemeral OS Disks and Shared Disks are not supported.
 3. Requires API version >= 2020-06-01
-4. Required AFECs: "Microsoft.Compute/ExcludeDisks", "Microsoft.Compute/IncrementalRestorePoints", 
+4. Required AFECs: "Microsoft.Compute/ExcludeDisks", "Microsoft.Compute/IncrementalRestorePoints"
 
 
 ## Creating a VM Restore Point
