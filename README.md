@@ -17,6 +17,7 @@ The Vm Restore Point feature is currently in private preview and is not meant fo
 ## Restrictions
 1. Only works with Managed disks.
 2. Ultra disks, Ephemeral OS Disks and Shared Disks are not supported.
+3. Requires API version >= 2020-06-01
 
 ## Creating a VM Restore Point
 1. First Step is to create a RestorePointCollection. You can do so by using the template https://github.com/Azure/Virtual-Machine-Restore-Points/blob/main/createRestorePointCollection.json
