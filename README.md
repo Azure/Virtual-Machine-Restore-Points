@@ -89,9 +89,7 @@ POST request body 
 
     "durationInSeconds": "3600"  
 
-    "revokeReadAccessIfExists" : true  
-
-}
+ }
 
 Response codes  
 
