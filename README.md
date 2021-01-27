@@ -12,7 +12,7 @@ A VM Restore Point stores the VM configuration and point-in-time crash (if the V
 You can create a VM using the VM Restore Point or create individual disks from the Disk Restore Point object. VM Restore Points are incremental where the first Restore Point stores a full copy of all the disk attached to the VM. For each successive restore point for a VM, only the incremental changes to your disks are backed up. To further reduce your costs, you can optionally exclude any disk when creating a restore point for your VM. 
 
 ## Note
-The Vm Restore Point feature is currently in private preview and is not meant for production workloads. The feature is currently supported via ARM templates and REST APIs only. Other client tool support such as portal, CLI, SDKs, etc. will be coming later. 
+The VM Restore Point feature is currently in private preview and is not meant for production workloads. The feature is currently supported via ARM templates and REST APIs only. Other client tool support such as portal, CLI, SDKs, etc. will be coming later. 
 
 ## Restrictions
 1. Only works with Managed disks.
@@ -32,8 +32,7 @@ PUT https://management.azure.com/subscriptions/{subscriptionID}/resourceGroups/{
 Request Body:
 {
 "name": "<RestorePointName>",
-"excludeDisks": [ {"id": "{/subscriptions/{subscriptionID}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/disks/{diskName}}"}],
-"id" : "apientityref"
+"excludeDisks": [ {"id": "/subscriptions/{subscriptionID}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/disks/{diskName}"}],
 }
 
 ## RestorePointCollection Resource
@@ -65,7 +64,7 @@ Request Body:
 "properties": {
 "creationData": {
 "createOption": "Restore",
-"sourceResourceId": "/subscriptions/{SubscriptionID}/resourceGroups/dfgdf_group/providers/Microsoft.Compute/restorePointCollections/{RestorePointCollectionName}/restorePoints/{RestorePointName}/diskRestorePoints/{DiskRestorePointName}"
+"sourceResourceId": "/subscriptions/{SubscriptionID}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{RestorePointCollectionName}/restorePoints/{RestorePointName}/diskRestorePoints/{DiskRestorePointName}"
 }
 }
 }
@@ -92,7 +91,8 @@ POST request body 
 
     "revokeReadAccessIfExists" : true  
 
-}  
+}
+
 Response codes  
 
 202 Accepted. This operation is performed asynchronously. After receiving a 202 HTTP response, the client is expected to poll for the status of the asynchronous part of the operation using the URL returned in the Azure-AsyncOperation header. Azure will show operation status as complete (‘succeeded’) only after the operation is complete.  
