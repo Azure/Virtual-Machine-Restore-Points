@@ -47,8 +47,7 @@ Use the following URI for GET and DELETE operation on the Restore Point resource
 
 https://management.azure.com/subscriptions/{SubscriptionID}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{RestorePointCollectionName}/RestorePoints/{RestorePointName}?api-version=2020-06-01
  
-An Update on existing Restore Point Collection resource is not supported. 
-
+For update of an existing Restore Point Collection resource, only update of tags is permitted.
 ## Create Disk
 
 1. Get the Disk Restore ID by either using GET call on Restore Point Collection and expanding Restore Points or by doing a call on Restore Point(s). 
