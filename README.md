@@ -11,6 +11,16 @@ A VM Restore Point stores the VM configuration and point-in-time crash (if the V
 
 You can create a VM using the VM Restore Point or create individual disks from the Disk Restore Point object. VM Restore Points are incremental where the first Restore Point stores a full copy of all the disk attached to the VM. For each successive restore point for a VM, only the incremental changes to your disks are backed up. To further reduce your costs, you can optionally exclude any disk when creating a restore point for your VM. 
 
+## Cross Region Copy of VM Restore Points
+As an extension to VM Restore Points we are providing additional functionality within Azure platform to enable our partners to build BCDR solutions for Azure VMs. One such functionality is: 
+Ability to copy VM Restore Points from one region to another other region
+ 
+ Scenarios where this API can be helpful:
+ * Extend multiple copies of backup to different regions
+ * Extend local backup solutions to support disaster recovery from region failures
+
+ For copying VM Restore Points across regions please refer to the [Cross Region VM Restore Points documentation](https://github.com/Azure/Virtual-Machine-Restore-Points/Cross-Region-VM-Restore-Points.md).
+
 ## Note
 The VM Restore Point feature is currently in private preview and is not meant for production workloads. The feature is currently supported via ARM templates and REST APIs only. Other client tool support such as portal, CLI, SDKs, etc. will be coming later. 
 
@@ -19,7 +29,6 @@ The VM Restore Point feature is currently in private preview and is not meant fo
 2. Ultra disks, Ephemeral OS Disks and Shared Disks are not supported.
 3. Requires API version >= 2020-06-01
 4. Required AFECs: "Microsoft.Compute/RestorePointExcludeDisks", "Microsoft.Compute/IncrementalRestorePoints"
-
 
 ## Creating a VM Restore Point
 1. First Step is to create a RestorePointCollection. You can do so by using the template https://github.com/Azure/Virtual-Machine-Restore-Points/blob/main/createRestorePointCollection.json
