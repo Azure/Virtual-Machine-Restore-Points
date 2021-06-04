@@ -354,6 +354,7 @@ GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{
 * There are no error details provided when a Disk Restore Point copy fails
 * When a disk restore point copy fails,  intermediate completion percentage where the copy failed is not shown.
 * Restoring of Disk from Restore point does not automatically check if the disk restore points replication is completed. You need to manually check the replication status and start restoring the disk only after the disk restore points is replicated successfully.
+* Restore points that are copied to the target region do not have a reference to the source VM. They have reference to the source Restore points. So, If the source Restore point is deleted there is no way to identify the source VM using the target Restore points.
 * Out of order copying of Restore Points is not supported. Meaning, if you have 3 restore points - RP1, RP2, RP3. If you have copied RP1 and RP3 to target region, you cannot copy RP2. 
 * Currently, the restore points and cross region copy charges get billed on an incorrect/non-existent resource. On clicking the resource it shows that it doesn't exist/not found.
 
@@ -390,3 +391,6 @@ Answer: No, you need to exclude disks while creating the local region restore po
 
 **Question: ProvisioningState of RestorePoint is marked as succeeded, does that mean copy of RestorePoint is completed/successful?**
 Answer: No, provisioningState only indicates that copy has been initiated successfully.  Poll on ReplicationState via Get instanceView for actual copy status
+
+**Question: When a disk restore point copy fails, can I resume the copy for the particular disk restore point?**
+Answer: No, when a disks restore point copy fails, the entire VM restore point copy fails and you cannot resume the copy. You need to restart the copy of the VM restore point.
