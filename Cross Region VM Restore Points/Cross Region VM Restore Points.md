@@ -6,16 +6,11 @@ Ability to copy VM Restore Points from one region to another other region
  * Extend multiple copies of backup to different regions
  * Extend local backup solutions to support disaster recovery from region failures
 
-
-## Glossary
-* Ubiquitous DR: Platform support for enabling DR solution to be available for every Azure IaaS VM with managed disks
-* VM Restore Points (RP): VM level multi-disk/volume consistent snapshots
-* Restore Point Collection (RPC): A logical container for all the Restore Points of a particular VM.
-* Cross Region Restore Points: Restore Points in a different region as compared to the region of the source VM
-
 **NOTE 1:** For copying a RestorePoint across region, you need to pre-create a RestorePoint in the local region. For details regarding creation of VM Restore Points in the local region refer to the [VM Restore Points documentation](https://github.com/Azure/Virtual-Machine-Restore-Points).
 
-**NOTE 2:** The Cross Region Copy of VM Restore Point feature is currently in private preview and is not meant for production workloads. The feature is currently supported via REST APIs only. Other client tool support such as portal, CLI, SDKs, etc. will be coming later. 
+**NOTE 2:** Cross Region Copy of VM Restore Point feature is currently in private preview and is not meant for production workloads. The feature is currently supported via REST APIs only. Other client tool support such as portal, CLI, SDKs, etc. will be coming later. 
+
+**NOTE 3:** Cross Region Copy of VM Restore Point feature is supported starting with api-version: '2021-03-01'.
 
 ## Cross-region copy of VM Restore Points
 ### Create Restore Point Collection in target region
@@ -92,7 +87,7 @@ This is a long running operation; hence the operation returns a 201 during creat
 
 During restore point creation, the ProvisioningState would appear as Creating in GET restore point API response. If creation fails, its ProvisioningState will be Failed. ProvisioningState would be set to Succeeded when the data copy across regions is initiated. 
 
-**NOTE:** The status of data movement can be tracked via “InstanceView” property. Restore Point is considered usable (can be used to restore a VM) only when copy of all the disk restore points are successful.
+**NOTE:** You can track the copy status by calling GET instance View (?$expand=instanceView) on the target VM Restore Point. Please check the "Get VM Restore Points Copy/Replication Status" section below on how to do this. VM Restore Point is considered usable (can be used to restore a VM) only when copy of all the disk restore points are successful.
 
 ##### Response body
 ```
@@ -339,7 +334,6 @@ GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{
           	"level": "Info",
           	"displayStatus": "Replication succeeded",
           	"message": "<will be populated in error scenarios>",
-          	"time": "2019-10-14T21:29:47.477089+00:00"
           	}
   “completionPercent” : <completion percentage of the replication>
 }
@@ -357,15 +351,16 @@ GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{
 * Currently, the replication progress in only updated once every 10mins. Hence for disks that have low churn, there can be scenarios where only the initial (0) and the terminal replication progress (100) can be seen.
 * Maximum copy time that is supported is 2 weeks. If there is huge amount data to be copied to the target region, depending on the bandwidth available between the regions, the copy time could be couple of days. If the copy time exceeds 2 weeks, the copy operation will be terminated. 
 * There are no error details provided when a Disk Restore Point copy fails
-* When a disk restore point copy fails, its completion percent is shown as 0, not the intermediate value where it stopped copying.
+* When a disk restore point copy fails,  intermediate completion percentage where the copy failed is not shown.
 * Restoring of Disk from Restore point does not automatically check if the disk restore points replication is completed. You need to manually check the replication status and start restoring the disk only after the disk restore points is replicated successfully.
 * Out of order copying of Restore Points is not supported. Meaning, if you have 3 restore points - RP1, RP2, RP3. If you have copied RP1 and RP3 to target region, you cannot copy RP2. 
+* Currently, the restore points and cross region copy charges get billed on an incorrect/non-existent resource. On clicking the resource it shows that it doesn't exist/not found.
 
 ## Frequently asked questions (FAQs)
-**Question: Can I copy the same RPC and RPs to multiple regions (one-to-many) independently to one another? Can this be done in parallel? or Is there any dependency between them?**
+**Question: Can I copy the same RPC and RPs to multiple regions (one-to-many) independently to one another? Can this be done in parallel?**
 Answer: Yes
 
-**Question: On the VM Restore Points Copy/Replication Status: How can I get the original RP creation time? is it provisioningDetails.creationTime?**
+**Question: On the VM Restore Points Copy/Replication Status: How can I get the original RP creation time? Is it provisioningDetails.creationTime?**
 Answer: GET on the Restore Point will return the creation time of that Restore Point. To get the creation time of the original Restore Point, you need to call GET on the original Restore Point.   
 
 **Question: Can I start work on a specific Disk Restore Point once it is copied to the target region (replicationStatus.Status.Code=succeeded) even if other disk restore points copy has NOT completed yet or failed?**
@@ -386,7 +381,7 @@ Answer: No. Copying of another restore point from the same source to the same ta
 **Question: Can I copy restore points from a source to a target region out-of-order?**
 Answer: No
 
-**Question: Can I copy of Restore Points from different source Restore Points Collections to the same Restore Points Collection in the target region?**
+**Question: Can I copy of Restore Points from different source Restore Point Collections to the same Restore Points Collection in the target region?**
 Answer: No
 
 **Question: Can I exclude disks while copying restore points from source region to target region?**
