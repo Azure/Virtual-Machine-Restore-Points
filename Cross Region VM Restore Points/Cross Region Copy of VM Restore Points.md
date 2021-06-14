@@ -71,8 +71,10 @@ PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{
 ```
 {
     "name": "name of the restore point resource",
-    "sourceRestorePoint": {
-        "id": "/subscriptions/{subid}/resourceGroups/{resourceGroupName}/providers/microsoft.compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{restorePointName}"
+    "properties": {
+        "sourceRestorePoint": {
+            "id": "/subscriptions/{subid}/resourceGroups/{resourceGroupName}/providers/microsoft.compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{restorePointName}"
+        }
     }
 }
 ```
@@ -94,87 +96,74 @@ During restore point creation, the ProvisioningState would appear as Creating in
 {
     "id": "CSM Id of the restore point",
     "name": "name of the restore point",
-    "optionalProperties": "opaque bag of properties to be passed to extension",
-    "sourceRestorePoint": {
-        "id": "/subscriptions/{subid}/resourceGroups/{resourceGroupName}/providers/microsoft.compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{restorePointName}"
-    },
-    "consistencyMode": "CrashConsistent | FileSystemConsistent | ApplicationConsistent",
-    "sourceMetadata": {
-        "vmId": "Unique Guid of the VM from which the restore point was created",
-        "location": "source VM location",
-        "hardwareProfile": {
-            "vmSize": "Standard_A1"
+    "properties": {
+        "optionalProperties": "opaque bag of properties to be passed to extension",
+        "sourceRestorePoint": {
+            "id": "/subscriptions/{subid}/resourceGroups/{resourceGroupName}/providers/microsoft.compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{restorePointName}"
         },
-        "osProfile": {
-            "computername": "",
-            "adminUsername": "",
-            "secrets": [
-                {
-                    "sourceVault": {
-                        "id": "/subscriptions/<subId>/resourceGroups/<rgName>/providers/Microsoft.KeyVault/vaults/<keyvault-name>"
-                    },
-                    "vaultCertificates": [
-                        {
-                            "certificateUrl": "https://<keyvault-name>.vault.azure.net/secrets/<secret-name>/<secret-version>",
-                            "certificateStore": "certificateStoreName on Windows"
-                        }
-                    ]
-                }
-            ],
-            "customData": "",
-            "windowsConfiguration": {
-                "provisionVMAgent": "true|false",
-                "winRM": {
-                    "listeners": [
-                        {
-                            "protocol": "http"
-                        },
-                        {
-                            "protocol": "https",
-                            "certificateUrl": ""
-                        }
-                    ]
-                },
-                "additionalUnattendContent": [
+        "consistencyMode": "CrashConsistent | FileSystemConsistent | ApplicationConsistent",
+        "sourceMetadata": {
+            "vmId": "Unique Guid of the VM from which the restore point was created",
+            "location": "source VM location",
+            "hardwareProfile": {
+                "vmSize": "Standard_A1"
+            },
+            "osProfile": {
+                "computername": "",
+                "adminUsername": "",
+                "secrets": [
                     {
-                        "pass": "oobesystem",
-                        "component": "Microsoft-Windows-Shell-Setup",
-                        "settingName": "FirstLogonCommands|AutoLogon",
-                        "content": "<XML unattend content>"
+                        "sourceVault": {
+                            "id": "/subscriptions/<subId>/resourceGroups/<rgName>/providers/Microsoft.KeyVault/vaults/<keyvault-name>"
+                        },
+                        "vaultCertificates": [
+                            {
+                                "certificateUrl": "https://<keyvault-name>.vault.azure.net/secrets/<secret-name>/<secret-version>",
+                                "certificateStore": "certificateStoreName on Windows"
+                            }
+                        ]
                     }
                 ],
-                "enableAutomaticUpdates": "true|false"
-            },
-            "linuxConfiguration": {
-                "disablePasswordAuthentication": "true|false",
-                "ssh": {
-                    "publicKeys": [
+                "customData": "",
+                "windowsConfiguration": {
+                    "provisionVMAgent": "true|false",
+                    "winRM": {
+                        "listeners": [
+                            {
+                                "protocol": "http"
+                            },
+                            {
+                                "protocol": "https",
+                                "certificateUrl": ""
+                            }
+                        ]
+                    },
+                    "additionalUnattendContent": [
                         {
-                            "path": "Path-Where-To-Place-Public-Key-On-VM",
-                            "keyData": "PEM-Encoded-public-key-file"
+                            "pass": "oobesystem",
+                            "component": "Microsoft-Windows-Shell-Setup",
+                            "settingName": "FirstLogonCommands|AutoLogon",
+                            "content": "<XML unattend content>"
                         }
-                    ]
-                }
-            }
-        },
-        "storageProfile": {
-            "osDisk": {
-                "osType": "Windows|Linux",
-                "name": "OSDiskName",
-                "diskSizeGB": "10",
-                "caching": "ReadWrite",
-                "managedDisk": {
-                    "id": "CSM Id of the managed disk",
-                    "storageAccountType": "Standard_LRS"
+                    ],
+                    "enableAutomaticUpdates": "true|false"
                 },
-                "diskRestorePoint": {
-                    "id": "/subscriptions/<subId>/resourceGroups/<rgName>/restorePointCollections/<rpcName>/restorePoints/<rpName>/diskRestorePoints/<diskRestorePointName>"
+                "linuxConfiguration": {
+                    "disablePasswordAuthentication": "true|false",
+                    "ssh": {
+                        "publicKeys": [
+                            {
+                                "path": "Path-Where-To-Place-Public-Key-On-VM",
+                                "keyData": "PEM-Encoded-public-key-file"
+                            }
+                        ]
+                    }
                 }
             },
-            "dataDisks": [
-                {
-                    "lun": "0",
-                    "name": "datadisk0",
+            "storageProfile": {
+                "osDisk": {
+                    "osType": "Windows|Linux",
+                    "name": "OSDiskName",
                     "diskSizeGB": "10",
                     "caching": "ReadWrite",
                     "managedDisk": {
@@ -184,19 +173,34 @@ During restore point creation, the ProvisioningState would appear as Creating in
                     "diskRestorePoint": {
                         "id": "/subscriptions/<subId>/resourceGroups/<rgName>/restorePointCollections/<rpcName>/restorePoints/<rpName>/diskRestorePoints/<diskRestorePointName>"
                     }
+                },
+                "dataDisks": [
+                    {
+                        "lun": "0",
+                        "name": "datadisk0",
+                        "diskSizeGB": "10",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "id": "CSM Id of the managed disk",
+                            "storageAccountType": "Standard_LRS"
+                        },
+                        "diskRestorePoint": {
+                            "id": "/subscriptions/<subId>/resourceGroups/<rgName>/restorePointCollections/<rpcName>/restorePoints/<rpName>/diskRestorePoints/<diskRestorePointName>"
+                        }
+                    }
+                ]
+            },
+            "diagnosticsProfile": {
+                "bootDiagnostics": {
+                    "enabled": true,
+                    "storageUri": " http://storageaccount.blob.core.windows.net/"
                 }
-            ]
-        },
-        "diagnosticsProfile": {
-            "bootDiagnostics": {
-                "enabled": true,
-                "storageUri": " http://storageaccount.blob.core.windows.net/"
             }
+        },
+        "provisioningState": "Succeeded | Failed | Creating | Deleting",
+        "provisioningDetails": {
+            "creationTime": "Creation Time of Restore point in UTC"
         }
-    },
-    "provisioningState": "Succeeded | Failed | Creating | Deleting",
-    "provisioningDetails": {
-        "creationTime": "Creation Time of Restore point in UTC"
     }
 }
 ```
@@ -214,87 +218,74 @@ GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{
 {
     "id": "CSM Id of the restore point",
     "name": "name of the restore point",
-    "optionalProperties": "opaque bag of properties to be passed to extension",
-    "sourceRestorePoint": {
-        "id": "/subscriptions/{subid}/resourceGroups/{resourceGroupName}/providers/microsoft.compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{restorePointName}"
-    },
-    "consistencyMode": "CrashConsistent | FileSystemConsistent | ApplicationConsistent",
-    "sourceMetadata": {
-        "vmId": "Unique Guid of the VM from which the restore point was created",
-        "location": "source VM location",
-        "hardwareProfile": {
-            "vmSize": "Standard_A1"
+    "properties": {
+        "optionalProperties": "opaque bag of properties to be passed to extension",
+        "sourceRestorePoint": {
+            "id": "/subscriptions/{subid}/resourceGroups/{resourceGroupName}/providers/microsoft.compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{restorePointName}"
         },
-        "osProfile": {
-            "computername": "",
-            "adminUsername": "",
-            "secrets": [
-                {
-                    "sourceVault": {
-                        "id": "/subscriptions/<subId>/resourceGroups/<rgName>/providers/Microsoft.KeyVault/vaults/<keyvault-name>"
-                    },
-                    "vaultCertificates": [
-                        {
-                            "certificateUrl": "https://<keyvault-name>.vault.azure.net/secrets/<secret-name>/<secret-version>",
-                            "certificateStore": "certificateStoreName on Windows"
-                        }
-                    ]
-                }
-            ],
-            "customData": "",
-            "windowsConfiguration": {
-                "provisionVMAgent": "true|false",
-                "winRM": {
-                    "listeners": [
-                        {
-                            "protocol": "http"
-                        },
-                        {
-                            "protocol": "https",
-                            "certificateUrl": ""
-                        }
-                    ]
-                },
-                "additionalUnattendContent": [
+        "consistencyMode": "CrashConsistent | FileSystemConsistent | ApplicationConsistent",
+        "sourceMetadata": {
+            "vmId": "Unique Guid of the VM from which the restore point was created",
+            "location": "source VM location",
+            "hardwareProfile": {
+                "vmSize": "Standard_A1"
+            },
+            "osProfile": {
+                "computername": "",
+                "adminUsername": "",
+                "secrets": [
                     {
-                        "pass": "oobesystem",
-                        "component": "Microsoft-Windows-Shell-Setup",
-                        "settingName": "FirstLogonCommands|AutoLogon",
-                        "content": "<XML unattend content>"
+                        "sourceVault": {
+                            "id": "/subscriptions/<subId>/resourceGroups/<rgName>/providers/Microsoft.KeyVault/vaults/<keyvault-name>"
+                        },
+                        "vaultCertificates": [
+                            {
+                                "certificateUrl": "https://<keyvault-name>.vault.azure.net/secrets/<secret-name>/<secret-version>",
+                                "certificateStore": "certificateStoreName on Windows"
+                            }
+                        ]
                     }
                 ],
-                "enableAutomaticUpdates": "true|false"
-            },
-            "linuxConfiguration": {
-                "disablePasswordAuthentication": "true|false",
-                "ssh": {
-                    "publicKeys": [
+                "customData": "",
+                "windowsConfiguration": {
+                    "provisionVMAgent": "true|false",
+                    "winRM": {
+                        "listeners": [
+                            {
+                                "protocol": "http"
+                            },
+                            {
+                                "protocol": "https",
+                                "certificateUrl": ""
+                            }
+                        ]
+                    },
+                    "additionalUnattendContent": [
                         {
-                            "path": "Path-Where-To-Place-Public-Key-On-VM",
-                            "keyData": "PEM-Encoded-public-key-file"
+                            "pass": "oobesystem",
+                            "component": "Microsoft-Windows-Shell-Setup",
+                            "settingName": "FirstLogonCommands|AutoLogon",
+                            "content": "<XML unattend content>"
                         }
-                    ]
-                }
-            }
-        },
-        "storageProfile": {
-            "osDisk": {
-                "osType": "Windows|Linux",
-                "name": "OSDiskName",
-                "diskSizeGB": "10",
-                "caching": "ReadWrite",
-                "managedDisk": {
-                    "id": "CSM Id of the managed disk",
-                    "storageAccountType": "Standard_LRS"
+                    ],
+                    "enableAutomaticUpdates": "true|false"
                 },
-                "diskRestorePoint": {
-                    "id": "/subscriptions/<subId>/resourceGroups/<rgName>/restorePointCollections/<rpcName>/restorePoints/<rpName>/diskRestorePoints/<diskRestorePointName>",
+                "linuxConfiguration": {
+                    "disablePasswordAuthentication": "true|false",
+                    "ssh": {
+                        "publicKeys": [
+                            {
+                                "path": "Path-Where-To-Place-Public-Key-On-VM",
+                                "keyData": "PEM-Encoded-public-key-file"
+                            }
+                        ]
+                    }
                 }
             },
-            "dataDisks": [
-                {
-                    "lun": "0",
-                    "name": "datadisk0",
+            "storageProfile": {
+                "osDisk": {
+                    "osType": "Windows|Linux",
+                    "name": "OSDiskName",
                     "diskSizeGB": "10",
                     "caching": "ReadWrite",
                     "managedDisk": {
@@ -302,43 +293,58 @@ GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{
                         "storageAccountType": "Standard_LRS"
                     },
                     "diskRestorePoint": {
-                        "id": "/subscriptions/<subId>/resourceGroups/<rgName>/restorePointCollections/<rpcName>/restorePoints/<rpName>/diskRestorePoints/<diskRestorePointName>",
+                        "id": "/subscriptions/<subId>/resourceGroups/<rgName>/restorePointCollections/<rpcName>/restorePoints/<rpName>/diskRestorePoints/<diskRestorePointName>"
+                    }
+                },
+                "dataDisks": [
+                    {
+                        "lun": "0",
+                        "name": "datadisk0",
+                        "diskSizeGB": "10",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "id": "CSM Id of the managed disk",
+                            "storageAccountType": "Standard_LRS"
+                        },
+                        "diskRestorePoint": {
+                            "id": "/subscriptions/<subId>/resourceGroups/<rgName>/restorePointCollections/<rpcName>/restorePoints/<rpName>/diskRestorePoints/<diskRestorePointName>"
+                        }
+                    }
+                ]
+            },
+            "diagnosticsProfile": {
+                "bootDiagnostics": {
+                    "enabled": true,
+                    "storageUri": " http://storageaccount.blob.core.windows.net/"
+                }
+            }
+        },
+        "provisioningState": "Succeeded | Failed | Creating | Deleting",
+        "provisioningDetails": {
+            "creationTime": "Creation Time of Restore point in UTC"
+        },
+        "instanceView": {
+            "statuses": [
+                {
+                    "code": "ReplicationState/succeeded",
+                    "level": "Info",
+                    "displayStatus": "Replication succeeded"
+                }
+            ],
+            "diskRestorePoints": [
+                {
+                    "id": "<diskRestorePoint Arm Id>",
+                    "replicationStatus": {
+                        "status": {
+                            "code": "ReplicationState/succeeded",
+                            "level": "Info",
+                            "displayStatus": "Replication succeeded"
+                        },
+                        "completionPercent": "<completion percentage of the replication>"
                     }
                 }
             ]
-        },
-        "diagnosticsProfile": {
-            "bootDiagnostics": {
-                "enabled": true,
-                "storageUri": " http://storageaccount.blob.core.windows.net/"
-            }
-        },
-    },
-    "provisioningState": "Succeeded | Failed | Creating | Deleting",
-    "provisioningDetails": {
-        "creationTime": "Creation Time of Restore point in UTC"
-    },
-    "instanceView": {
-        "statuses": [
-            {
-                "code": "ReplicationState/succeeded",
-                "level": "Info",
-                "displayStatus": "Replication succeeded",
-            }
-        ],
-        "diskRestorePoints": [
-            {
-                "id": "<diskRestorePoint Arm Id>",
-                "replicationStatus": {
-                    "status": {
-                        "code": "ReplicationState/succeeded",
-                        "level": "Info",
-                        "displayStatus": "Replication succeeded",
-                    },
-                    "completionPercent": "<completion percentage of the replication>"
-                }
-            }
-        ]
+        }
     }
 }
 ```
