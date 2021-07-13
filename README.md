@@ -19,7 +19,7 @@ Ability to copy VM Restore Points from one region to another other region
  * Extend multiple copies of backup to different regions
  * Extend local backup solutions to support disaster recovery from region failures
 
- For copying VM Restore Points across regions please refer to the [Cross Region VM Restore Points documentation](https://github.com/Azure/Virtual-Machine-Restore-Points/Cross-Region-VM-Restore-Points.md).
+ For copying VM Restore Points across regions please refer to the [Cross Region VM Restore Points documentation](https://github.com/Azure/Virtual-Machine-Restore-Points/blob/main/Cross%20Region%20VM%20Restore%20Points/Cross%20Region%20Copy%20of%20VM%20Restore%20Points.md).
 
 ## Note
 The VM Restore Point feature is currently in private preview and is not meant for production workloads. The feature is currently supported via ARM templates and REST APIs only. Other client tool support such as portal, CLI, SDKs, etc. will be coming later. 
