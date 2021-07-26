@@ -32,7 +32,7 @@ The VM Restore Point feature is currently in private preview and is not meant fo
 ## Restrictions
 1. Only works with Managed disks.
 2. Ultra disks, Ephemeral OS Disks and Shared Disks are not supported.
-3. Requires API version >= 2020-06-01
+3. Requires API version >= 2021-03-01
 4. Required AFECs: "Microsoft.Compute/RestorePointExcludeDisks", "Microsoft.Compute/IncrementalRestorePoints"
 
 ## Creating a VM Restore Point
@@ -41,7 +41,7 @@ The VM Restore Point feature is currently in private preview and is not meant fo
 
 2a. You can also create a restore point and exclude one or more attached disks by using the following API call:
 
-PUT https://management.azure.com/subscriptions/{subscriptionID}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{RestorePointCollectionName}/restorePoints/{RestorePointName}?api-version=2020-06-01
+PUT https://management.azure.com/subscriptions/{subscriptionID}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{RestorePointCollectionName}/restorePoints/{RestorePointName}?api-version=2021-03-01
 
 Request Body:
 {
@@ -52,14 +52,14 @@ Request Body:
 ## RestorePointCollection Resource
 Use the following URI for GET and DELETE operation on the Restore Point Collection resource. The URI has all the required parameters and there is no need for an additional request body.
 
-https://management.azure.com/subscriptions/{SubscriptionID}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{RestorePointCollectionName}?$expand=restorePoints&api-version=2020-06-01
+https://management.azure.com/subscriptions/{SubscriptionID}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{RestorePointCollectionName}?$expand=restorePoints&api-version=2021-03-01
  
 You can use PATCH/PUT request to update tags on a Restore Point Collection. No other properties (e.g. location, source VM) can be updated. 
 
 ## RestorePoint Resource
 Use the following URI for GET and DELETE operation on the Restore Point resource. The URI has all the required parameters and there is no need for an additional request body.
 
-https://management.azure.com/subscriptions/{SubscriptionID}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{RestorePointCollectionName}/RestorePoints/{RestorePointName}?api-version=2020-06-01
+https://management.azure.com/subscriptions/{SubscriptionID}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{RestorePointCollectionName}/RestorePoints/{RestorePointName}?api-version=2021-03-01
  
 For update of an existing Restore Point Collection resource, only update of tags is permitted.
 ## Create Disk
