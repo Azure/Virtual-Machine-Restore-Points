@@ -11,15 +11,20 @@ A VM Restore Point stores the VM configuration and point-in-time crash (if the V
 
 You can create a VM using the VM Restore Point or create individual disks from the Disk Restore Point object. VM Restore Points are incremental where the first Restore Point stores a full copy of all the disk attached to the VM. For each successive restore point for a VM, only the incremental changes to your disks are backed up. To further reduce your costs, you can optionally exclude any disk when creating a restore point for your VM. 
 
-## Cross Region Copy of VM Restore Points
-As an extension to VM Restore Points we are providing additional functionality within Azure platform to enable our partners to build BCDR solutions for Azure VMs. One such functionality is: 
-Ability to copy VM Restore Points from one region to another other region
- 
+## Cross Region VM Restore Points
+As an extension to VM Restore Points we are providing additional functionality within Azure platform to enable our partners to build BCDR solutions for Azure VMs. Additional functionalities include: 
+**1. Ability to copy VM Restore Points from one region to another other region**
  Scenarios where this API can be helpful:
  * Extend multiple copies of backup to different regions
  * Extend local backup solutions to support disaster recovery from region failures
 
- For copying VM Restore Points across regions please refer to the [Cross Region VM Restore Points documentation](https://github.com/Azure/Virtual-Machine-Restore-Points/Cross-Region-VM-Restore-Points.md).
+ For copying VM Restore Points across regions please refer to the [Cross Region Copy of VM Restore Points documentation](https://github.com/Azure/Virtual-Machine-Restore-Points/blob/main/Cross%20Region%20VM%20Restore%20Points/Cross%20Region%20Copy%20of%20VM%20Restore%20Points.md).
+
+**2. Ability to create VM Restore Points directly in the target region by referencing a VM in the source region**
+Scenario where this API can be helpful: 
+* Implement a disaster recovery solution to protect VMs from region failure.
+
+For creating VM Restore Points across regions please refer to the [Cross Region Creation of VM Restore Points documentation](https://github.com/Azure/Virtual-Machine-Restore-Points/blob/main/Cross%20Region%20VM%20Restore%20Points/Cross%20Region%20Creation%20of%20VM%20Restore%20Points.md).
 
 ## Note
 The VM Restore Point feature is currently in private preview and is not meant for production workloads. The feature is currently supported via ARM templates and REST APIs only. Other client tool support such as portal, CLI, SDKs, etc. will be coming later. 
