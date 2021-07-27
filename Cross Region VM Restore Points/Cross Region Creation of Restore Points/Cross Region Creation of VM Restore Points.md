@@ -7,7 +7,7 @@ First step in creating a VM Restore point in a target region referencing a VM fr
 
 #### URI Request
 ```
-PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}&api-version={api-version}
+PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}?api-version={api-version}
 ```
 **NOTE:** api-version must be 2021-07-01 or later
 
@@ -45,7 +45,7 @@ The operation returns a 201 during create and 200 during Update.
         "restorePointCollectionId": "Guid Id of RestorePointCollection",
         "source": {
             "id": "/subscriptions/{subid}/resourceGroups/{resourceGroupName}/providers/microsoft.compute/virtualMachines/{vmName}",
-            "location": "westus"
+            "location": "location of the virtualMachine resource"
         }
     }
 } 
@@ -56,7 +56,7 @@ Next step is to trigger creation of a RestorePoint in the target RestorePointCol
 
 #### URI request
 ```
-PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{restorePointName}&api-version={api-version}
+PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{restorePointName}?api-version={api-version}
 ```
 #### Request body
 ```
@@ -305,7 +305,7 @@ Once creation of VM Restore Points is initiated, you can track the data copy sta
 
 #### URI Request
 ```
-GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{restorePointName}?$expand=instanceView&api-version={api-version}
+GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{restorePointName}?$expand=instanceView?api-version={api-version}
 ```
 
 #### Response
@@ -445,13 +445,12 @@ GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{
 ```
 
 ## Known issues and limitations
-* Cross-region copy functionality is only supported via REST APIs. ARM Template deployment, CLI, SDK, PS will be added later. 
+* Cross-region creation functionality is only supported via REST APIs and template deployment. CLI, SDK, PS will be added later. 
 * Concurrent creation of Restore Points for a VM in the same or different regions is not supported
-* Error messages may not reflect the actual error that has occurred. Error messages will be updated.
+* Error messages may not reflect the actual error that has occurred. We are working on improving the error messages to make them more intuitive.
 * Restore point of CMK encrypted VM and disks will be encrypted using PMK in the target region. Customer needs to use CMK when restoring the disks and VM from the restore point.
 * Currently, the replication progress in only updated once every 10mins. Hence for disks that have low churn, there can be scenarios where only the initial (0) and the terminal replication progress (100) can be seen.
-* If there is huge amount data to be copied to the target region, depending on the bandwidth available between the regions, the creation time could be couple of days. If the creation time exceeds 2 weeks, the restore points creation operation will be terminated.
-* When a disk restore point creation fails, its completion percent is shown as 0, not the intermediate value where it failed.
-* Restoring of Disk from Restore point does not automatically check if the disk restore points replication is completed. You need to manually check the replication status and start restoring the disk only after the disk restore points is replicated successfully.
+* If there is huge amount data to be copied to the target region, depending on the bandwidth available between the regions, copy time could be couple of days. If time taken to copy the data exceeds 2 weeks, the restore points replication will be terminated and the Restore Point will not be usable.
 * Restore points that are copied to the target region do not have a reference to the source VM. The source VM reference is available in the Restore Point Collection
+* Billing of Restore Point Collection may not be accurate. You will see 2 seperate billing entries for a single Restore Point Collection (one entry in the source region and another in the target region).
 * Other known issues and limitations of cross region copy of restore points may apply here as well
