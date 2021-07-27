@@ -8,9 +8,11 @@ Ability to copy VM Restore Points from one region to another other region
 
 **NOTE 1:** For copying a RestorePoint across region, you need to pre-create a RestorePoint in the local region. For details regarding creation of VM Restore Points in the local region refer to the [VM Restore Points documentation](https://github.com/Azure/Virtual-Machine-Restore-Points).
 
-**NOTE 2:** Cross Region Copy of VM Restore Point feature is currently in private preview and is not meant for production workloads. The feature is currently supported via REST APIs only. Other client tool support such as portal, CLI, SDKs, etc. will be coming later. 
+**NOTE 2:** Cross Region Copy of VM Restore Point feature is currently in private preview and is not meant for production workloads. The feature is currently supported via REST APIs only. Other client tool support such as portal, CLI, SDKs, etc. will be coming later
 
-**NOTE 3:** Cross Region Copy of VM Restore Point feature is supported starting with api-version: '2021-03-01'.
+**NOTE 3:** Cross Region Copy of VM Restore Point feature is supported starting with api-version: '2021-03-01'
+
+**NOTE 4:** Cross Region Copy of VM Restore Points is currently supported only in Canary regions (East US EUAP and Central US EUAP)
 
 ## Cross-region copy of VM Restore Points
 ### Create Restore Point Collection in target region
