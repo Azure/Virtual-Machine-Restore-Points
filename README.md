@@ -18,13 +18,13 @@ As an extension to VM Restore Points we are providing additional functionality w
  * Extend multiple copies of backup to different regions
  * Extend local backup solutions to support disaster recovery from region failures
 
- For copying VM Restore Points across regions please refer to the [Cross Region Copy of VM Restore Points documentation](https://github.com/Azure/Virtual-Machine-Restore-Points/blob/main/Cross%20Region%20VM%20Restore%20Points/Cross%20Region%20Copy%20of%20VM%20Restore%20Points.md).
+ For copying VM Restore Points across regions please refer to the [Cross Region Copy of VM Restore Points documentation](https://github.com/Azure/Virtual-Machine-Restore-Points/blob/main/Cross%20Region%20VM%20Restore%20Points/Cross%20Region%20Copy%20of%20Restore%20Points/Cross%20Region%20Copy%20of%20VM%20Restore%20Points.md).
 
 **2. Ability to create VM Restore Points directly in the target region by referencing a VM in the source region**
 Scenario where this API can be helpful: 
 * Implement a disaster recovery solution to protect VMs from region failure.
 
-For creating VM Restore Points across regions please refer to the [Cross Region Creation of VM Restore Points documentation](https://github.com/Azure/Virtual-Machine-Restore-Points/blob/main/Cross%20Region%20VM%20Restore%20Points/Cross%20Region%20Creation%20of%20VM%20Restore%20Points.md).
+For creating VM Restore Points across regions please refer to the [Cross Region Creation of VM Restore Points documentation](https://github.com/Azure/Virtual-Machine-Restore-Points/blob/main/Cross%20Region%20VM%20Restore%20Points/Cross%20Region%20Creation%20of%20Restore%20Points/Cross%20Region%20Creation%20of%20VM%20Restore%20Points.md).
 
 ## Note
 The VM Restore Point feature is currently in private preview and is not meant for production workloads. The feature is currently supported via ARM templates and REST APIs only. Other client tool support such as portal, CLI, SDKs, etc. will be coming later. 
@@ -44,7 +44,7 @@ The VM Restore Point feature is currently in private preview and is not meant fo
 ## RestorePointCollection Resource
 Use the following URI for GET and DELETE operation on the Restore Point Collection resource. The URI has all the required parameters and there is no need for an additional request body.
 
-https://management.azure.com/subscriptions/{SubscriptionID}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{RestorePointCollectionName}?$expand=restorePoints&api-version=2021-03-01
+https://management.azure.com/subscriptions/{SubscriptionID}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{RestorePointCollectionName}?$expand=restorePoints?api-version=2021-03-01
  
 You can use PATCH/PUT request to update tags on a Restore Point Collection. No other properties (e.g. location, source VM) can be updated. 
 
