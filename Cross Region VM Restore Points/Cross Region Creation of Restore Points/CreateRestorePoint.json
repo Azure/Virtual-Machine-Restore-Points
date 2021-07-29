@@ -1,0 +1,20 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "RestorePointCollectionName": {
+            "type": "string",
+            "defaultValue": "<RestorePointCollectionName>"
+        },
+        "RestorePointName": {
+            "type": "string",
+            "defaultValue": "<RestorePointName>"
+        }
+    },
+    "resources": [{
+            "type": "Microsoft.Compute/restorePointCollections/restorePoints",
+            "name": "[concat(parameters('RestorePointCollectionName'), '/', parameters('RestorePointName') )]",
+            "apiVersion": "2021-07-01"
+        }
+    ]
+}
