@@ -11,15 +11,20 @@ A VM Restore Point stores the VM configuration and point-in-time crash (if the V
 
 You can create a VM using the VM Restore Point or create individual disks from the Disk Restore Point object. VM Restore Points are incremental where the first Restore Point stores a full copy of all the disk attached to the VM. For each successive restore point for a VM, only the incremental changes to your disks are backed up. To further reduce your costs, you can optionally exclude any disk when creating a restore point for your VM. 
 
-## Cross Region Copy of VM Restore Points
-As an extension to VM Restore Points we are providing additional functionality within Azure platform to enable our partners to build BCDR solutions for Azure VMs. One such functionality is: 
-Ability to copy VM Restore Points from one region to another other region
- 
+## Cross Region VM Restore Points
+As an extension to VM Restore Points we are providing additional functionality within Azure platform to enable our partners to build BCDR solutions for Azure VMs. Additional functionalities include: 
+**1. Ability to copy VM Restore Points from one region to another other region**
  Scenarios where this API can be helpful:
  * Extend multiple copies of backup to different regions
  * Extend local backup solutions to support disaster recovery from region failures
 
- For copying VM Restore Points across regions please refer to the [Cross Region VM Restore Points documentation](https://github.com/Azure/Virtual-Machine-Restore-Points/blob/main/Cross%20Region%20VM%20Restore%20Points/Cross%20Region%20Copy%20of%20VM%20Restore%20Points.md).
+ For copying VM Restore Points across regions please refer to the [Cross Region Copy of VM Restore Points documentation](https://github.com/Azure/Virtual-Machine-Restore-Points/blob/main/Cross%20Region%20VM%20Restore%20Points/Cross%20Region%20Copy%20of%20Restore%20Points/README.md).
+
+**2. Ability to create VM Restore Points directly in the target region by referencing a VM in the source region**
+Scenario where this API can be helpful: 
+* Implement a disaster recovery solution to protect VMs from region failure.
+
+For creating VM Restore Points across regions please refer to the [Cross Region Creation of VM Restore Points documentation](https://github.com/Azure/Virtual-Machine-Restore-Points/blob/main/Cross%20Region%20VM%20Restore%20Points/Cross%20Region%20Creation%20of%20Restore%20Points/README.md).
 
 ## Note
 The VM Restore Point feature is currently in private preview and is not meant for production workloads. The feature is currently supported via ARM templates and REST APIs only. Other client tool support such as portal, CLI, SDKs, etc. will be coming later. 
@@ -31,18 +36,10 @@ The VM Restore Point feature is currently in private preview and is not meant fo
 4. Required AFECs: "Microsoft.Compute/RestorePointExcludeDisks", "Microsoft.Compute/IncrementalRestorePoints"
 
 ## Creating a VM Restore Point
-1. First Step is to create a RestorePointCollection. You can do so by using the template https://github.com/Azure/Virtual-Machine-Restore-Points/blob/main/createRestorePointCollection.json
-2. Next, you can create a restore point using the RestorePointCollection. You can do so by using the template https://github.com/Azure/Virtual-Machine-Restore-Points/blob/main/CreateRestorePoint.json
+1. First Step is to create a RestorePointCollection. You can refer to the following API documentation on [how to create a RestorePointCollection](https://docs.microsoft.com/en-us/rest/api/compute/restore-point-collections/create-or-update#create-or-update-a-restore-point-collection.).
+2. Next, you can create a restore point using the RestorePointCollection. You can refer to the following API documentation on [how to create a RestorePoint](https://docs.microsoft.com/en-us/rest/api/compute/restore-points/create#create-a-restore-point).
+* You can also create a restore point and exclude one or more attached disks.
 
-2a. You can also create a restore point and exclude one or more attached disks by using the following API call:
-
-PUT https://management.azure.com/subscriptions/{subscriptionID}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{RestorePointCollectionName}/restorePoints/{RestorePointName}?api-version=2021-03-01
-
-Request Body:
-{
-"name": "<RestorePointName>",
-"excludeDisks": [ {"id": "/subscriptions/{subscriptionID}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/disks/{diskName}"}],
-}
 
 ## RestorePointCollection Resource
 Use the following URI for GET and DELETE operation on the Restore Point Collection resource. The URI has all the required parameters and there is no need for an additional request body.
@@ -57,33 +54,29 @@ Use the following URI for GET and DELETE operation on the Restore Point resource
 https://management.azure.com/subscriptions/{SubscriptionID}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{RestorePointCollectionName}/RestorePoints/{RestorePointName}?api-version=2021-03-01
  
 For update of an existing Restore Point Collection resource, only update of tags is permitted.
+
 ## Create Disk
-
 1. Get the Disk Restore ID by either using GET call on Restore Point Collection and expanding Restore Points or by doing a call on Restore Point(s). 
-2. You can then use this ARM template to create a disk using diskRestorePoint: https://github.com/Azure/Virtual-Machine-Restore-Points/blob/main/createDiskFromDiskRestorePoint.json
-
-Alternatively, you can also use the below Rest API call (same as https://docs.microsoft.com/en-us/rest/api/compute/disks/createorupdate):
+2. You can use the below Rest API call to create a disk using diskRestorePoint. [API documentation.](https://docs.microsoft.com/en-us/rest/api/compute/disks/createorupdate)
 
 PUT https://management.azure.com/subscriptions/49151e6d-fa6e-4985-ae85-00548ec78853/resourceGroups/dfgdf_group/providers/Microsoft.Compute/disks/restore_disk1?api-version=2020-12-01
 
 Request Body:
 {
-"location": "East US",
-"properties": {
-"creationData": {
-"createOption": "Restore",
-"sourceResourceId": "/subscriptions/{SubscriptionID}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{RestorePointCollectionName}/restorePoints/{RestorePointName}/diskRestorePoints/{DiskRestorePointName}"
-}
-}
+   "location": "East US",
+   "properties": {
+      "creationData": {
+      "createOption": "Restore",
+      "sourceResourceId": "/subscriptions/{SubscriptionID}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{RestorePointCollectionName}/restorePoints/{RestorePointName}/diskRestorePoints/{DiskRestorePointName}"
+      }
+   }
 }
 
 ## SAS using Disk Restore Points
-
 We are providing a BeginGetAccess API through which the user can directly pass the ID of the diskRestorePoint to create a SAS to the underlying disk. 
 
-   If there is no active SAS on the incremental snapshot of the restore point, then a new SAS will be created and Url returned to the user. 
-
-   If there is already an active SAS, the SAS will be extended and original SASUrl will be returned. 
+* If there is no active SAS on the incremental snapshot of the restore point, then a new SAS will be created and Url returned to the user. 
+* If there is already an active SAS, the SAS will be extended and original SASUrl will be returned. 
 
 POST  
 
