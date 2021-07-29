@@ -1,4 +1,4 @@
-# Cross-Region-VM-Restore-Points
+# Cross-Region-Copy-VM-Restore-Points
 As an extension to VM Restore Points we are providing additional functionality within Azure platform to enable our partners to build BCDR solutions for Azure VMs. One such functionality is: 
 Ability to copy VM Restore Points from one region to another other region
  
