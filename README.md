@@ -44,7 +44,7 @@ The VM Restore Point feature is currently in private preview and is not meant fo
 ## RestorePointCollection Resource
 Use the following URI for GET and DELETE operation on the Restore Point Collection resource. The URI has all the required parameters and there is no need for an additional request body.
 
-https://management.azure.com/subscriptions/{SubscriptionID}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{RestorePointCollectionName}?$expand=restorePoints?api-version=2021-03-01
+https://management.azure.com/subscriptions/{SubscriptionID}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{RestorePointCollectionName}?$expand=restorePoints&api-version=2021-03-01
  
 You can use PATCH/PUT request to update tags on a Restore Point Collection. No other properties (e.g. location, source VM) can be updated. 
 
