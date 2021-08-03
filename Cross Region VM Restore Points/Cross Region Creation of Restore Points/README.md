@@ -446,6 +446,7 @@ GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{
 
 ## Known issues and limitations
 * Cross-region creation functionality is only supported via REST APIs and template deployment. CLI, SDK, PS will be added later. 
+* Restore Point Collection created in the target region has to be in the same Resource Group (RG) as the source VM. Cross Resource Group (RG) creation of Restore Points is currently not supported.
 * Concurrent creation of Restore Points for a VM in the same or different regions is not supported
 * Error messages may not reflect the actual error that has occurred. We are working on improving the error messages to make them more intuitive.
 * Restore point of CMK encrypted VM and disks will be encrypted using PMK in the target region. Customer needs to use CMK when restoring the disks and VM from the restore point.
