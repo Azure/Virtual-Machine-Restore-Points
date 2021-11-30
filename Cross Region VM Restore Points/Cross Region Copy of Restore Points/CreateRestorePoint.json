@@ -1,0 +1,37 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "RestorePointCollectionName": {
+      "type": "string",
+      "defaultValue": "<RestorePointCollectionName>"
+    },
+    "RestorePointName": {
+      "type": "string",
+      "defaultValue": "<RestorePointName>"
+    },
+    "SourceRestorePointCollectionName": {
+      "type": "string",
+      "defaultValue": "<SourceRestorePointCollectionName>"
+    },
+    "SourceRestorePointName": {
+      "type": "string",
+      "defaultValue": "<SourceRestorePointName>"
+    }
+  },
+  "variables": {
+    "SourceResourceId": "[resourceId(resourceGroup().name, 'Microsoft.Compute/restorePointCollections/restorePoints', parameters('SourceRestorePointCollectionName'), parameters('SourceRestorePointName'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Compute/restorePointCollections/restorePoints",
+      "name": "[concat(parameters('RestorePointCollectionName'), '/', parameters('RestorePointName'))]",
+      "apiVersion": "2021-03-01",
+      "properties": {
+        "sourceRestorePoint": {
+          "id": "[variables('SourceResourceId')]"
+        }
+      }
+    }
+  ]
+}
