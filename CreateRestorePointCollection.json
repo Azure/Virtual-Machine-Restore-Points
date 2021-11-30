@@ -1,0 +1,26 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "RestorePointCollectionName": {
+            "type": "string",
+            "defaultValue": "<RestorePointCollectionName>"
+        },
+        "VMResourceId": {
+            "type": "string",
+            "defaultValue": "subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroupName>/providers/Microsoft.Compute/virtualMachines/<VMName>"
+        }
+    },
+    "resources": [{
+            "type": "Microsoft.Compute/restorePointCollections",
+            "name": "[parameters('RestorePointCollectionName')]",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2021-03-01",
+            "properties": {
+                "source": {
+                    "id": "[parameters('VMResourceId')]"
+                }
+            }
+        }
+    ]
+}
