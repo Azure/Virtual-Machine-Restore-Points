@@ -10,7 +10,7 @@ A VM Restore Point stores the VM configuration and point-in-time crash (if the V
 You can create a VM using the VM Restore Point or create individual disks from the Disk Restore Point object. VM Restore Points are incremental where the first Restore Point stores a full copy of all the disk attached to the VM. For each successive restore point for a VM, only the incremental changes to your disks are backed up. To further reduce your costs, you can optionally exclude any disk when creating a restore point for your VM. 
 
 ## Get started
-VM restore points are available in all public regions. Please review the [VM restore points documentation]() to learn how to:
+VM restore points are available in all public regions. Please review the [VM restore points documentation](https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-create-restore-points) to learn how to:
 * Create VM restore points to protect the VM from data loss and data corruption 
 * Exclude disks that you do not want to protect as part of VM restore points to optimize costs
 * Restore a VM and all disks from a VM restore point
