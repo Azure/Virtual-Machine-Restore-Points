@@ -6,6 +6,10 @@
       "type": "string",
       "defaultValue": "<RestorePointCollectionName>"
     },
+    "RestorePointCollectionLocation": {
+      "type": "string",
+      "defaultValue": "<RestorePointCollectionLocation>"
+    },
     "SourceRestorePointCollectionName": {
       "type": "string",
       "defaultValue": "<SourceRestorePointCollectionName>"
@@ -18,7 +22,7 @@
     {
       "type": "Microsoft.Compute/restorePointCollections",
       "name": "[concat(parameters('RestorePointCollectionName'))]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('RestorePointCollectionLocation')]",
       "apiVersion": "2021-03-01",
       "properties": {
         "source": {
