@@ -29,4 +29,4 @@ PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{
 ## Know issues and limitations
 * Suggested frequency at which crash consistent restore points can be create is 1 hour during preview
 * Cross region creation of crash consistent restore points directly in a different region than the deployed VM is currently not supproted
-* The VM for which you want to create a crash consistent restore point needs to have a tag called "EnableCrashConsistentRestorePoint". You cannot create a crash consistent restore point for VMs without this tag
+* The VM for which you want to create a crash consistent restore point needs to have a tag called **"EnableCrashConsistentRestorePoint"**. You cannot create a crash consistent restore point for VMs without this tag
