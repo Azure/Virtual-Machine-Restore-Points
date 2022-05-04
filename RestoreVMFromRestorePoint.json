@@ -58,9 +58,25 @@
             "type": "string",
             "defaultValue": "<restored_osdisk_name>"
         },
+        "restoredOSDiskSku": {
+            "type": "string",
+            "defaultValue": "Premium_LRS"
+        },
+        "restoredOSDiskSizeGB": {
+            "type": "string",
+            "defaultValue": "1024"
+        },
         "restoredDataDiskName": {
             "type": "string",
             "defaultValue": "<restored_datadisk_name>"
+        },
+        "restoredDataDiskSku": {
+            "type": "string",
+            "defaultValue": "Premium_LRS"
+        },
+        "restoredDataDiskSizeGB": {
+            "type": "string",
+            "defaultValue": "1024"
         }
     },
     "variables": {
@@ -82,10 +98,10 @@
                     "createOption": "Restore",
                     "sourceResourceId": "[parameters('osdiskRestorePointResourceId')]"
                 },
-                "diskSizeGB": "1024"
+                "diskSizeGB": "[parameters('restoredOSDiskSizeGB')]"
             },
             "sku": {
-                "name": "Premium_LRS"
+                "name": "[parameters('restoredOSDiskSku')]"
             }
         },
         {
@@ -98,10 +114,10 @@
                     "createOption": "Restore",
                     "sourceResourceId": "[parameters('datadiskRestorePointResourceId')]"
                 },
-                "diskSizeGB": "1024"
+                "diskSizeGB": "[parameters('restoredDataDiskSizeGB')]"
             },
             "sku": {
-                "name": "Premium_LRS"
+                "name": "[parameters('restoredDataDiskSku')]"
             }
         },
         {
