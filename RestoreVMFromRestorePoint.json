@@ -1,0 +1,249 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "<location>"
+        },
+        "networkInterfaceName": {
+            "type": "string",
+            "defaultValue": "<nicName>"
+        },
+        "networkSecurityGroupName": {
+            "type": "string",
+            "defaultValue": "<nsgName>"
+        },
+        "subnetName": {
+            "type": "string",
+            "defaultValue": "<subnetName>"
+        },
+        "virtualNetworkName": {
+            "type": "string",
+            "defaultValue": "<vnetName>"
+        },
+        "publicIpAddressName": {
+            "type": "string",
+            "defaultValue": "<publicIPName>"
+        },
+        "virtualMachineName": {
+            "type": "string",
+            "defaultValue": "<vmName>"
+        },
+        "virtualMachineComputerName": {
+            "type": "string",
+            "defaultValue": "<computeName>"
+        },
+        "virtualMachineSize": {
+            "type": "string",
+            "defaultValue": "<vmSize>"
+        },
+        "adminUsername": {
+            "type": "string",
+            "defaultValue": "<username>"
+        },
+        "adminPassword": {
+            "type": "secureString",
+            "defaultValue": "<password>"
+        },
+        "osdiskRestorePointResourceId": {
+            "type": "string",
+            "defaultValue": "/subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroupName>/providers/Microsoft.Compute/restorePointCollections/<RestorePointCollectionName>/restorePoints/<RestorePointName>/diskRestorePoints/<OSDiskRestorePointName>"
+        },
+        "datadiskRestorePointResourceId": {
+            "type": "string",
+            "defaultValue": "/subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroupName>/providers/Microsoft.Compute/restorePointCollections/<RestorePointCollectionName>/restorePoints/<RestorePointName>/diskRestorePoints/<DataDiskRestorePointName>"
+        },
+        "restoredOSDiskName": {
+            "type": "string",
+            "defaultValue": "<restored_osdisk_name>"
+        },
+        "restoredOSDiskSku": {
+            "type": "string",
+            "defaultValue": "Premium_LRS"
+        },
+        "restoredOSDiskSizeGB": {
+            "type": "string",
+            "defaultValue": "1024"
+        },
+        "restoredDataDiskName": {
+            "type": "string",
+            "defaultValue": "<restored_datadisk_name>"
+        },
+        "restoredDataDiskSku": {
+            "type": "string",
+            "defaultValue": "Premium_LRS"
+        },
+        "restoredDataDiskSizeGB": {
+            "type": "string",
+            "defaultValue": "1024"
+        }
+    },
+    "variables": {
+        "nsgId": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]",
+        "vnetName": "[parameters('virtualNetworkName')]",
+        "vnetId": "[resourceId(resourceGroup().name,'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
+        "restoredOSDiskResourceId": "[resourceId(resourceGroup().name, 'Microsoft.Compute/disks', parameters('restoredOSDiskName'))]",
+        "restoredDataDiskResourceId": "[resourceId(resourceGroup().name, 'Microsoft.Compute/disks', parameters('restoredDataDiskName'))]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2021-04-01",
+            "type": "Microsoft.Compute/disks",
+            "name": "[parameters('restoredOSDiskName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "creationData": {
+                    "createOption": "Restore",
+                    "sourceResourceId": "[parameters('osdiskRestorePointResourceId')]"
+                },
+                "diskSizeGB": "[parameters('restoredOSDiskSizeGB')]"
+            },
+            "sku": {
+                "name": "[parameters('restoredOSDiskSku')]"
+            }
+        },
+        {
+            "apiVersion": "2021-04-01",
+            "type": "Microsoft.Compute/disks",
+            "name": "[parameters('restoredDataDiskName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "creationData": {
+                    "createOption": "Restore",
+                    "sourceResourceId": "[parameters('datadiskRestorePointResourceId')]"
+                },
+                "diskSizeGB": "[parameters('restoredDataDiskSizeGB')]"
+            },
+            "sku": {
+                "name": "[parameters('restoredDataDiskSku')]"
+            }
+        },
+        {
+            "name": "[parameters('networkInterfaceName')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2021-03-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'))]",
+                "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
+                "[concat('Microsoft.Network/publicIpAddresses/', parameters('publicIpAddressName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "subnet": {
+                                "id": "[variables('subnetRef')]"
+                            },
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIpAddress": {
+                                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses', parameters('publicIpAddressName'))]",
+                                "properties": {
+                                    "deleteOption": "Detach"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "networkSecurityGroup": {
+                    "id": "[variables('nsgId')]"
+                }
+            }
+        },
+        {
+            "name": "[parameters('networkSecurityGroupName')]",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2019-02-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "securityRules": [
+                ]
+            }
+        },
+        {
+            "name": "[parameters('virtualNetworkName')]",
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2020-11-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.0.0.0/16"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "default",
+                        "properties": {
+                            "addressPrefix": "10.0.0.0/24"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[parameters('publicIpAddressName')]",
+            "type": "Microsoft.Network/publicIpAddresses",
+            "apiVersion": "2020-08-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publicIpAllocationMethod": "Dynamic"
+            },
+            "sku": {
+                "name": "Basic"
+            }
+        },
+        {
+            "name": "[parameters('virtualMachineName')]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2021-07-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkInterfaces/', parameters('networkInterfaceName'))]",
+                "[concat('Microsoft.Compute/disks/', parameters('restoredOSDiskName'))]",
+                "[concat('Microsoft.Compute/disks/', parameters('restoredDataDiskName'))]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('virtualMachineSize')]"
+                },
+                "storageProfile": {
+                    "osDisk": {
+                        "osType": "Windows",
+                        "createOption": "attach",
+                        "managedDisk": {
+                            "id": "[variables('restoredOSDiskResourceId')]"
+                        }
+                    },
+                    "datadisks": [
+                        {
+                            "lun": 0,
+                            "createOption": "attach",
+                            "managedDisk": {
+                                "id": "[variables('restoredDataDiskResourceId')]"
+                            }
+                        }
+                    ]
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaceName'))]",
+                            "properties": {
+                                "deleteOption": "Detach"
+                            }
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true
+                    }
+                }
+            }
+        }
+    ]
+}
