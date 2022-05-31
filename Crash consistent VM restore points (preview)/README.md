@@ -8,7 +8,6 @@ In preview you can perform the following operation on crash consistent restore p
 * Create crash consistent VM restore points to protect Azure VMs at 1 hour frequency 
 * Exclude disks that you do not want to protect as part of crash consistent VM restore points to optimize costs
 * Restore all disks from a crash consistent VM restore point
-* Copy crash consistent VM restore points from one region to another for remote backup and DR scenarios
 
 All the above operations use the same API interface as app consistent VM restore points. The only change needed is, when creating a crash consistent VM restore point, you need to specify the "consistencyMode" property as "CrashConsistent" in the request as shown below:
 
