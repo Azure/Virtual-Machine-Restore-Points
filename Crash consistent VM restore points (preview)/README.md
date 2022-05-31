@@ -1,5 +1,5 @@
 # What is a Crash consistent VM Restore Point? 
-A crash consistent VM restore point stores the VM configuration and point-in-time write-order consistent snapshots for all managed disks attached to a Virtual Machine. This is same as the status of the data in the VM after a power outage or a crash.
+A crash consistent VM restore point stores the VM configuration and point-in-time write-order consistent snapshots for all managed disks attached to a Virtual Machine. This is same as the status of data in the VM after a power outage or a crash.
 
 ## Get started
 You can now create multi-disk crash consistent restore points for your Azure VMs and use these restore points for backup and/or disaster. Crash consistent VM restore points are available in the following regions: EAST US 2 EUAP. If you want know more about VM restore points. Please review our [VM restore points public documentation](https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-create-restore-points).
