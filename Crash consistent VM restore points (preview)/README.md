@@ -26,6 +26,7 @@ PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{
 ```
 
 ## Know issues and limitations in private preview
+* Regions supported: EAST US 2 EUAP
 * You need to create a new VM with tag name **"EnableCrashConsistentRestorePoint"** and value **"True"**. You cannot create a crash consistent restore point for existing VMs
 * After creating the VM you need to wait for **at least 10mins** before creating a crash consistent restore point
 * Suggested frequency at which crash consistent restore points can be created is 1 hour
