@@ -31,3 +31,4 @@ PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{
 * After creating the VM you need to wait for **at least 10mins** before creating a crash consistent restore point
 * Suggested frequency at which crash consistent restore points can be created is 1 hour
 * Cross region creation of crash consistent restore points directly in a different region than the deployed VM is currently not supported
+* Managed Disks of size 8TB and above are currently not supported
