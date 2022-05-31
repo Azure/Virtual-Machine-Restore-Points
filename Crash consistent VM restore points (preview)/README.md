@@ -9,7 +9,7 @@ In preview you can perform the following operation on crash consistent restore p
 * Exclude disks that you do not want to protect as part of crash consistent VM restore points to optimize costs
 * Restore all disks from a crash consistent VM restore point
 
-All the above operations use the same API interface as app consistent VM restore points. The only change needed is, when creating a crash consistent VM restore point, you need to specify the "consistencyMode" property as "CrashConsistent" in the request as shown below:
+All the above operations use the same API interface as app consistent VM restore points. The only changes needed are, when creating a crash consistent VM restore point, you need to specify the "consistencyMode" property as "CrashConsistent" in the request and the request API version should be **2021-07-01** as shown below:
 
 #### URI request
 ```
