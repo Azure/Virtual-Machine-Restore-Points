@@ -32,4 +32,5 @@ PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{
 * Suggested frequency at which crash consistent restore points can be created is 1 hour
 * Cross region creation of crash consistent restore points directly in a different region than the deployed VM is currently not supported
 * Managed Disks of size 8TB and above (striped disks) are currently not supported
+* Managed Disks with paid bursting (striped disks) are not supported
 * Standard HDDs are currently not supported
