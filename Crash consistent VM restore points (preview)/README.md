@@ -2,7 +2,7 @@
 A crash consistent VM restore point stores the VM configuration and point-in-time write-order consistent snapshots for all managed disks attached to a Virtual Machine. This is same as the status of data in the VM after a power outage or a crash.
 
 ## Get started
-You can now create multi-disk crash consistent restore points for your Azure VMs and use these restore points for backup and/or disaster. Crash consistent VM restore points are available in the following regions: EAST US 2 EUAP. If you want know more about VM restore points, please review our [VM restore points public documentation](https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-create-restore-points). Your subscription needs to be whitelisted for using crash consistent restore points so please reach out to your Microsoft point of contact to participate in the private preivew.
+You can now create multi-disk crash consistent restore points for your Azure VMs and use these restore points for backup and/or disaster. Crash consistent VM restore points are available in the following regions: EAST US 2 EUAP. If you want know more about VM restore points, please review our [VM restore points public documentation](https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-create-restore-points). Your subscription needs to be whitelisted for using crash consistent restore points so please reach out to VMRestorepoints@microsoft.com to participate in the private preivew.
 
 In preview you can perform the following operation on crash consistent restore points
 * Create crash consistent VM restore points to protect Azure VMs at 1 hour frequency 
@@ -26,11 +26,13 @@ PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{
 ```
 
 ## Know issues and limitations in private preview
-* Regions supported: EAST US 2 EUAP
-* You need to create a new VM with tag name **"EnableCrashConsistentRestorePoint"** and value **"True"**. You cannot create a crash consistent restore point for existing VMs
-* After creating the VM you need to wait for **at least 10mins** before creating a crash consistent restore point
+* Subscription whitelisting is required. Please reachout to VMRestorepoints@microsoft.com with the subscription id to try out this feature.
+* Regions supported:CanadaCentral,WestCentralUS,JapanWest, CentralIndia, EastAsia, WestUS. We will continue to rollout in all regions in the coming weeks.
 * Suggested frequency at which crash consistent restore points can be created is 1 hour
 * Cross region creation of crash consistent restore points directly in a different region than the deployed VM is currently not supported
-* Managed Disks of size 8TB and above (striped disks) are currently not supported
-* Managed Disks with paid bursting (striped disks) are not supported
-* Standard HDDs are currently not supported
+* Managed Disks of size 8TB and above (striped disks) are currently not supported.
+* Managed Disks with paid bursting (striped disks) are not supported.
+* Ultra-disks, Premium v2 SSD, Ephemeral OS disks, Shared disks and Write Accelerated disks are not supported.
+
+
+
