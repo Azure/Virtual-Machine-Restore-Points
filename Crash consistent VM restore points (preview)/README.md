@@ -30,5 +30,5 @@ PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{
 * Regions supported: All Azure production regions.
 * Suggested frequency at which crash consistent restore points can be created is 1 hour
 * Cross region creation of crash consistent restore points directly in a different region than the deployed VM is currently not supported
-* Managed Disks of size 4TB and above (striped disks) are currently supported only in JapanWest,IndiaCentral,CanadaCentral,AustraliaSouthEast,AsiaEast,USWestCentral,AsiaSouthEast,UKSouth,JapanEast,USWest,USEast2. We will continue to rollout in all regions in the coming weeks. Please watch out for an update here.
+* Managed Disks of size 4TB and above (striped disks) are currently supported only in JapanWest,IndiaCentral,CanadaCentral,AustraliaSouthEast,AsiaEast,USWestCentral,AsiaSouthEast,UKSouth,JapanEast,USWest,USEast2 and AustraliaEast. We will continue to rollout in all regions in the coming weeks. Please watch out for an update here.
 * Ultra-disks, Premium v2 SSD, Ephemeral OS disks, Shared disks and Write Accelerated disks are not supported.
