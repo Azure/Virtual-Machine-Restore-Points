@@ -1,4 +1,8 @@
-## Cross-region creation of VM Restore Points
+## Cross-region creation of VM Restore Points 
+```#000000
+Cross-region creation is currently deprecated and no longer supported.
+```
+
 Ability to create VM Restore Points directly in the target region by referencing a VM in the source region
 **Scenario where this API can be helpful:** Implement a disaster recovery solution to protect VMs from region failure.
 
