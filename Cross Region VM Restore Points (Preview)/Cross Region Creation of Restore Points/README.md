@@ -1,4 +1,4 @@
-**NOTE: Cross region creation of VM Restore points has been deperacted** 
+### ```NOTE: Cross region creation of VM Restore points has been deperacted```
 ## Cross-region creation of VM Restore Points
 Ability to create VM Restore Points directly in the target region by referencing a VM in the source region
 **Scenario where this API can be helpful:** Implement a disaster recovery solution to protect VMs from region failure.
